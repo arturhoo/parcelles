@@ -1,4 +1,4 @@
-#H1 Parcelles
+# Parcelles
 
 Utilizes packer to quickly provision VM images for local testing through Virtualbox or Amazon EC2 AMIs for deployment and staging environments.
 
@@ -22,25 +22,25 @@ export AWS_ACCESS_KEY="..."
 export AWS_SECRET_KEY="..."
 ```
 
-#H2 Scripts
+## Scripts
 Most of our infrastructure is based on Ubuntu Server and the provisioning scripts assume it as the base OS (apt, upstart, etc...).
 
-#H3 non-aws.sh
+### non-aws.sh
 Takes a vanilla Ubuntu Server install and includes packages and idiosyncrasies to bring it closer to default ubuntu AMI.
 
-#H3 base.sh
+### base.sh
 Our opinionated touches of what should be present with every Ubuntu.
 
 Includes things such as tracking of bash timestamps, unattended-upgrades for critical security fixes, enabling ssh agent forwarding and longer timeout, and other basic things utilities such as vim, git, htop, etc... all in their latest and greatest maintained versions
 
-#H3 nginx.sh
+### nginx.sh
 
 Basic unattended installation of the latest upstream nginx. When provisioning an AMI, creates a separate EBS to store served content.
 
-#H3 mysql.sh
+### mysql.sh
 
 Basic unattended installation of mysql. Like nginx, creates a separate EBS when provisioning an AMI formated to xfs to simplify database backup through ec2-consistent-snapshot.
 
-#H3 php.sh
+### php.sh
 
 Basic unattended installation of php. Sets up socket so php-fpm can communicate with nginx. Also includes necessary php libraries for common apps such as wordpress and moodle.
