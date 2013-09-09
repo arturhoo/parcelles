@@ -1,0 +1,91 @@
+{
+    "builders": [
+        {
+            "type": "virtualbox",
+
+            "vm_name": "ubuntu-packer",
+            "guest_os_type": "Ubuntu_64",
+            "disk_size": 8192,
+            "http_directory": "http",
+
+            "iso_url": "http://releases.ubuntu.com/precise/ubuntu-12.04.3-server-amd64.iso",
+            "iso_checksum": "2cbe868812a871242cdcdd8f2fd6feb9",
+            "iso_checksum_type": "md5",
+
+            "boot_command": [
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us <wait>",
+                "hostname={{ .Name }} <wait>",
+                "fb=false debconf/frontend=noninteractive <wait>",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false <wait>",
+                "initrd=/install/initrd.gz -- <enter><wait>"
+            ],
+            "shutdown_command": "sudo poweroff",
+
+            "ssh_username": "ubuntu",
+            "ssh_password": "ubuntu"
+        },
+        {
+            "type": "amazon-ebs",
+
+            "ami_name": "ubuntu-packer-{{ timestamp }}",
+            "region": "us-west-1",
+            "source_ami": "ami-fe002cbb",
+            "instance_type": "c1.medium",
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_type": "standard",
+                    "volume_size": 20,
+                    "delete_on_termination" : true
+                },
+                {
+                    "device_name": "/dev/sdb",
+                    "virtual_name": "ephemeral0"
+                },
+                {
+                    "device_name": "/dev/sdf",
+                    "volume_size": 10,
+                    "volume_type": "standard",
+                    "delete_on_termination" : true
+                },
+                {
+                    "device_name": "/dev/sdg",
+                    "volume_size": 10,
+                    "volume_type": "standard",
+                    "delete_on_termination" : true
+                }
+            ],
+
+            "ssh_username": "ubuntu"
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "override": {
+                "virtualbox": {
+                    "execute_command": "echo 'ubuntu' | sudo -S bash {{ .Path }}",
+                    "scripts": [
+                        "scripts/non-aws.sh",
+                        "scripts/base.sh",
+                        "scripts/mysql.sh",
+                        "scripts/nginx.sh",
+                        "scripts/php.sh"
+                    ]
+                },
+                "amazon-ebs": {
+                    "execute_command": "sudo bash {{ .Path }}",
+                    "scripts": [
+                        "scripts/base.sh",
+                        "scripts/mysql.sh",
+                        "scripts/nginx.sh",
+                        "scripts/php.sh"
+                    ]
+                }
+            }
+        }
+    ]
+}
