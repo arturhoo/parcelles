@@ -71,6 +71,7 @@
                     "scripts": [
                         "scripts/non-aws.sh",
                         "scripts/base.sh",
+                        "scripts/mongodb.sh",
                         "scripts/mysql.sh",
                         "scripts/nginx.sh",
                         "scripts/php.sh"
@@ -80,6 +81,10 @@
                     "execute_command": "sudo bash {{ .Path }}",
                     "scripts": [
                         "scripts/base.sh",
+                        "scripts/consistent-snapshot.sh",
+                        "scripts/mongodb-aws.sh",
+                        "scripts/mongodb.sh",
+                        "scripts/mysql-aws.sh",
                         "scripts/mysql.sh",
                         "scripts/nginx.sh",
                         "scripts/php.sh"
