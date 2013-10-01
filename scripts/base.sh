@@ -5,6 +5,10 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+# Sync clock
+ntpdate ntp.ubuntu.com
+hwclock --systohc
+
 # Enable bash history timestamping
 TIMESTAMP='export HISTTIMEFORMAT="%F %T "'
 echo $TIMESTAMP | sudo tee -a /etc/profile
@@ -14,7 +18,7 @@ eval $TIMESTAMP
 add-apt-repository -y ppa:nginx/stable
 apt-get update
 
-apt-get install build-essential git htop vim tmux curl nginx -y
+apt-get install build-essential curl git htop nginx ntp tmux vim -y
 
 # Install and configure unattended upgrades
 apt-get install unattended-upgrades -y
