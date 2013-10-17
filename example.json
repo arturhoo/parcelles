@@ -64,33 +64,34 @@
 
     "provisioners": [
         {
+            "type": "file",
+            "source": "puppet/hieradata",
+            "destination": "/home/ubuntu/hieradata"
+        },
+        {
             "type": "shell",
             "override": {
                 "virtualbox": {
                     "execute_command": "echo 'ubuntu' | sudo -S bash {{ .Path }}",
                     "scripts": [
                         "scripts/non-aws.sh",
-                        "scripts/base.sh",
-                        "scripts/mongodb.sh",
-                        "scripts/mysql.sh",
-                        "scripts/nginx.sh",
-                        "scripts/php.sh"
+                        "scripts/puppet.sh"
                     ]
                 },
                 "amazon-ebs": {
                     "execute_command": "sudo bash {{ .Path }}",
                     "scripts": [
-                        "scripts/base.sh",
-                        "scripts/consistent-snapshot.sh",
-                        "scripts/mongodb-aws.sh",
-                        "scripts/mongodb.sh",
-                        "scripts/mysql-aws.sh",
-                        "scripts/mysql.sh",
-                        "scripts/nginx.sh",
-                        "scripts/php.sh"
+                        "scripts/partition.sh",
+                        "scripts/puppet.sh"
                     ]
                 }
             }
+        },
+        {
+            "type": "puppet-masterless",
+            "manifest_file": "puppet/site.pp",
+            "hiera_config_path": "puppet/hiera.yaml",
+            "module_paths": ["puppet/modules"]
         }
     ]
 }
