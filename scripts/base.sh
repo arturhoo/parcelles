@@ -18,7 +18,7 @@ eval $TIMESTAMP
 add-apt-repository -y ppa:nginx/stable
 apt-get update
 
-apt-get install build-essential curl git htop nginx ntp tmux vim -y
+apt-get install build-essential curl git htop nginx ntp tmux unzip vim -y
 
 # Install and configure unattended upgrades
 apt-get install unattended-upgrades -y
