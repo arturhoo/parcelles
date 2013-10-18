@@ -4,7 +4,6 @@ class nginx {
     command => "apt-add-repository ppa:nginx/stable -y &&
                 apt-get update",
     creates => "/etc/apt/sources.list.d/nginx-stable-${::lsbdistcodename}.list",
-    logoutput => true,
   } ->
   package { "nginx":
     ensure => latest
@@ -15,16 +14,22 @@ class nginx {
     owner => "www-data",
     group => "www-data",
     mode => 755,
-    recurse => true,
+    recurse => true
   } ->
   user { "ubuntu":
-    groups => "www-data",
+    groups => "www-data"
   }
 
   if $::ec2_ami_id and "xvdg1" in $::lsblk {
-    # TODO: mount partition
-    notify { "mount partition":
-      before => File["/srv/www"]
+    mount { "/srv/www":
+      require => File["/srv/www"],
+      ensure => mounted,
+      atboot => true,
+      device => "/dev/xvdg1",
+      fstype => "ext4",
+      options => "noatime,noexec,nodiratime",
+      dump => 0,
+      pass => 0
     }
   }
 }

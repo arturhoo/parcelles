@@ -5,7 +5,6 @@ class ec2tools {
     command => "apt-add-repository ppa:alestic -y &&
                 apt-get update",
     creates => "/etc/apt/sources.list.d/alestic-ppa-${::lsbdistcodename}.list",
-    logoutput => true,
   }
 
   exec { "Register ppa:webupd8team/java":
@@ -14,7 +13,6 @@ class ec2tools {
     command => "apt-add-repository ppa:webupd8team/java -y &&
                 apt-get update",
     creates => "/etc/apt/sources.list.d/webupd8team-java-${::lsbdistcodename}.list",
-    logoutput => true,
   }
 
   exec { "Accept Oracle License":
@@ -22,7 +20,6 @@ class ec2tools {
     command => "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections &&
                 echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections",
     unless => "sudo debconf-get-selections | grep accepted-oracle-license-v1-1 | grep -q true",
-    logoutput => true,
   }
 
   package { [ "liblocal-lib-perl", "ec2-consistent-snapshot",

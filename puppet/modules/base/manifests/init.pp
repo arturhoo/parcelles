@@ -18,7 +18,7 @@ class base {
     ensure => present,
     owner => "root",
     group => "root",
-    mode => 644,
+    mode => 644
   }
 
   file {
@@ -37,7 +37,12 @@ class base {
       content => regsubst("APT::Periodic::Update-Package-Lists \"1\";
                            APT::Periodic::Download-Upgradeable-Packages \"1\";
                            APT::Periodic::AutocleanInterval \"7\";
-                           APT::Periodic::Unattended-Upgrade \"1\";", "^ +", "", "G")
+                           APT::Periodic::Unattended-Upgrade \"1\";", "^ +", "", "G");
+    "/home/ubuntu/.tmux.conf":
+      require => Package["tmux"],
+      source => "puppet:///modules/base/.tmux.conf",
+      owner => "ubuntu",
+      group => "ubuntu"
   }
 
 

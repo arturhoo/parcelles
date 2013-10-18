@@ -3,7 +3,6 @@ class mongodb {
     before => Package["mongodb-10gen"],
     command => "apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10",
     unless => "apt-key list | grep -q 7F0CEB10",
-    logoutput => true,
   }
   file { "/etc/apt/sources.list.d/mongodb.list":
     before => Package["mongodb-10gen"],
@@ -18,9 +17,14 @@ class mongodb {
   }
 
   if $::ec2_ami_id and "xvdf1" in $::lsblk {
-    # TODO: mount partition
-    notify { "mount partition":
-      before => File["var/lib/mongodb"]
+    mount { "/var/lib/mongodb":
+      ensure => mounted,
+      atboot => true,
+      device => "/dev/xvdf1",
+      fstype => "xfs",
+      options => "noatime,noexec,nodiratime",
+      dump => 0,
+      pass => 0
     }
   }
 }

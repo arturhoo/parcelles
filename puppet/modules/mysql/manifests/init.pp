@@ -12,9 +12,15 @@ class mysql {
   }
 
   if $::ec2_ami_id and "xvdf1" in $::lsblk {
-    # TODO: mount partition
-    notify { "mount partition":
-      before => File["var/lib/mysql"]
+    mount { "/var/lib/mysql":
+      require => Package["mysql-server"],
+      ensure => mounted,
+      atboot => true,
+      device => "/dev/xvdf1",
+      fstype => "xfs",
+      options => "noatime,noexec,nodiratime",
+      dump => 0,
+      pass => 0
     }
   }
 }

@@ -5,7 +5,7 @@ node default {
 
   include base
   include mysql
-  include mongodb
+  #include mongodb
   include nginx
   include php
   include ec2tools
