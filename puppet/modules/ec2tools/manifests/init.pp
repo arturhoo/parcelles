@@ -27,6 +27,22 @@ class ec2tools {
     ensure => latest
   }
 
-  #TODO: Perl deps
-  #TODO: ec2 api java tools
+  # Perl Deps for ec2-consistent-snapshot
+  require cpan
+  cpan { [ "Net::Amazon::EC2", "MongoDB::Admin", "Any::Moose"]:
+    require => Package["liblocal-lib-perl"],
+    ensure => present
+  }
+
+  # EC2 api tools
+  $ec2_api_tools = "http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip"
+  exec { "Install ec2-api-tools":
+    require => Package["oracle-java7-installer"],
+    command => "wget ${ec2_api_tools} &&
+                unzip ec2-api-tools.zip &&
+                echo 'mv $(compgen -A file ec2-api-tools-) /home/ubuntu/ec2/' | bash &&
+                rm ec2-api-tools.zip",
+    creates => "/home/ubuntu/ec2",
+    user => "ubuntu"
+  }
 }
