@@ -49,6 +49,7 @@ class base {
   # SSH Settings for smooth deployment.
   service { "ssh":
     ensure => running,
+    enable => true,
     hasrestart => true
   }
 
@@ -72,7 +73,8 @@ class base {
   # Prevent time slips syncing with ntp.
   service { "ntp":
     require => Package["ntp"],
-    ensure => running
+    ensure => running,
+    enable => true
   }
 
   # Always sync on puppet execution.

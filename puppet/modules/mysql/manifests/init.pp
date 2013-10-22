@@ -3,12 +3,25 @@ class mysql {
     ensure => latest
   }
 
-  exec { "Add ubuntu user":
+  service { "mysql":
     require => Package["mysql-server"],
+    ensure => running,
+    enable => true,
+    hasrestart => true
+  }
+
+  exec { "Add ubuntu user":
+    require => Service["mysql"],
     command => "mysql -uroot \
                 --execute=\"GRANT ALL PRIVILEGES ON *.* TO 'ubuntu'@'%'\"",
     unless => "mysql -uroot --batch --skip-column-names \
                --execute=\"SELECT User FROM mysql.user WHERE User = 'ubuntu' AND Host = '%';\" | grep -q ubuntu"
+  }
+
+  augeas  { "bind address":
+    notify => Service["mysql"],
+    context => "/files/etc/mysql/my.cnf",
+    changes => "set /files/etc/mysql/my.cnf/target[. = 'mysqld']/bind-address 0.0.0.0"
   }
 
   if $::ec2_ami_id and "xvdf1" in $::lsblk {
