@@ -1,10 +1,14 @@
 class ruby (
+  $user = "ubuntu",
   $version = "1.9.3-p448"
 ) {
+  # YUI Compressor gem needs it
+  require java
 
-  rbenv::install { "ubuntu": }
+  rbenv::install { $user: }
   ->
   rbenv::compile { $version:
-    user => "ubuntu"
+    user => $user,
+    global => true
   }
 }
