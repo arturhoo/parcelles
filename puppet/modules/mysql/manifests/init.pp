@@ -13,7 +13,7 @@ class mysql {
   exec { "Add ubuntu user":
     require => Service["mysql"],
     command => "mysql -uroot \
-                --execute=\"GRANT ALL PRIVILEGES ON *.* TO 'ubuntu'@'%'\"",
+                --execute=\"GRANT ALL PRIVILEGES ON *.* TO 'ubuntu'@'%';\"",
     unless => "mysql -uroot --batch --skip-column-names \
                --execute=\"SELECT User FROM mysql.user WHERE User = 'ubuntu' AND Host = '%';\" | grep -q ubuntu"
   }
@@ -25,8 +25,11 @@ class mysql {
   }
 
   if $::ec2_ami_id and "xvdf1" in $::lsblk {
+    file { "/var/lib/mysql":
+      ensure => directory
+    } ->
     mount { "/var/lib/mysql":
-      require => Package["mysql-server"],
+      before => Package["mysql-server"],
       ensure => mounted,
       atboot => true,
       device => "/dev/xvdf1",

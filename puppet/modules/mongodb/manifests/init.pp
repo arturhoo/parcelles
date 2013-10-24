@@ -17,7 +17,11 @@ class mongodb {
   }
 
   if $::ec2_ami_id and "xvdf1" in $::lsblk {
+    file { "/var/lib/mongodb":
+      ensure => directory
+    } ->
     mount { "/var/lib/mongodb":
+      before => Package["mongodb-10gen"],
       ensure => mounted,
       atboot => true,
       device => "/dev/xvdf1",
