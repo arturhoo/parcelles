@@ -89,4 +89,8 @@ class base {
     "user" => "ubuntu"
   }
   create_resources(ssh_authorized_key, hiera("ssh_keys"), $ssh_keys_defaults)
+
+  if $::ec2_ami_id {
+    include ec2tools
+  }
 }
