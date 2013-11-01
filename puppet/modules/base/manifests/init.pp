@@ -88,9 +88,15 @@ class base {
   $ssh_keys_defaults = {
     "user" => "ubuntu"
   }
-  create_resources(ssh_authorized_key, hiera("ssh_keys"), $ssh_keys_defaults)
+  create_resources(ssh_authorized_key, hiera("ssh_keys", {}), $ssh_keys_defaults)
 
   if $::ec2_ami_id {
     include ec2tools
+  }
+
+  exec { "dist-upgrade":
+    command => 'apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade',
+    environment => "DEBIAN_FRONTEND=noninteractive",
+    timeout => 0
   }
 }
