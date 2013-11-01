@@ -13,14 +13,16 @@ class ec2tools {
 
   # Perl Deps for ec2-consistent-snapshot
   require cpan
+  $cpan_deps = [ Package["liblocal-lib-perl"], Package["build-essential"], Package["unzip"] ]
   cpan { [ "Net::Amazon::EC2", "Any::Moose" ]:
-    require => [ Package["liblocal-lib-perl"], Package["build-essential"], Package["unzip"] ],
+    require => $cpan_deps,
     ensure => present
   }
 
   if defined(Package["mongodb-10gen"]) {
+    $cpan_deps += [ Package["mongodb-10gen"] ]
     cpan { "MongoDB::Admin":
-      require => [ Cpan["Net::Amazon::EC2"], Package["mongodb-10gen"] ],
+      require => $cpan_deps,
       ensure => present
     }
   }
