@@ -4,14 +4,13 @@ node default {
   }
 
   include base
-  include ec2tools
 
   include nginx
 
   include mysql
   #include mongodb
 
-  include php
+  #include php
   class { "ruby":
     version => "1.9.3-p448"
   }

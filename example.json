@@ -2,6 +2,7 @@
     "builders": [
         {
             "type": "virtualbox",
+            "headless": true,
 
             "vm_name": "ubuntu-packer",
             "guest_os_type": "Ubuntu_64",
@@ -30,6 +31,7 @@
             "type": "amazon-ebs",
 
             "ami_name": "ubuntu-packer-{{ timestamp }}",
+            "ami_description": "Packer generated AMI",
             "region": "us-west-1",
             "source_ami": "ami-fe002cbb",
             "instance_type": "c1.medium",
