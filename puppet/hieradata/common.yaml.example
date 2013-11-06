@@ -1,0 +1,11 @@
+---
+# Fill in the desired ssh keys here
+ssh_keys:
+    "batman":
+        type: "ssh-rsa"
+        key: "AAAABB...AQQwggyfood"
+        ensure: "present"
+    "robin":
+        type: "ssh-rsa"
+        key: "AAAAB3...5/gSHiggy1k"
+        ensure: "present"
