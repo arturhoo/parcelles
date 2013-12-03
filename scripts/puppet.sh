@@ -8,7 +8,7 @@ fi
 # Use latest stable puppet for hiera
 wget http://apt.puppetlabs.com/puppetlabs-release-precise.deb -P /tmp
 dpkg -i /tmp/puppetlabs-release-precise.deb
-sudo apt-get update
+apt-get update
 
 apt-get install puppet -y
 
