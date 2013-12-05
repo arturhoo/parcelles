@@ -9,9 +9,6 @@ apt-get -q update
 apt-get -q -y install autoconf automake build-essential git libass-dev libgpac-dev \
   libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev
 mkdir ~/ffmpeg_sources
-echo 'if [ -d "${HOME}/bin" ]; thenaptget
-  export PATH="${HOME}/bin:${PATH}"
-fi' | tee -a ~/.profile
 
 # YASM
 cd ~/ffmpeg_sources
