@@ -10,7 +10,8 @@ class packages {
       'tree',
       'unattended-upgrades',
       'unzip',
-      'vim'
+      'vim',
+      'wget'
     ]: ensure => present
   }
 }
