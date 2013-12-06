@@ -3,6 +3,8 @@ node default {
     path => $::path,
   }
 
+  include packages
+
   include base
 
   include nginx
@@ -12,6 +14,6 @@ node default {
 
   #include php
   class { "ruby":
-    version => "1.9.3-p448"
+    version => "2.0.0-p353"
   }
 }
