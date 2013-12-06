@@ -1,10 +1,16 @@
 class base {
   # Useful basic packages.
-  package { [ "build-essential", "curl", "git", "htop", "ntp",
-              "python-software-properties", "tmux", "tree",
-              "unattended-upgrades", "unzip", "vim" ]:
-    ensure => latest
-  }
+  realize Package['build-essential']
+  realize Package['curl']
+  realize Package['git']
+  realize Package['htop']
+  realize Package['ntp']
+  realize Package['python-software-properties']
+  realize Package['tmux']
+  realize Package['tree']
+  realize Package['unattended-upgrades']
+  realize Package['unzip']
+  realize Package['vim']
 
   # Vim AS THE ONE TRUE EDITOR!!!!
   exec { "vim as default editor":
@@ -80,7 +86,7 @@ class base {
   # Always sync on puppet execution.
   exec { "Sync clock":
     notify => Service["ntp"],
-    command => "service ntp stop && 
+    command => "service ntp stop &&
                 ntpdate ntp.ubuntu.com"
   }
 
