@@ -83,13 +83,6 @@ class base {
     enable => true
   }
 
-  # Always sync on puppet execution.
-  exec { "Sync clock":
-    notify => Service["ntp"],
-    command => "service ntp stop &&
-                ntpdate ntp.ubuntu.com"
-  }
-
   # Load ssh keys.
   $ssh_keys_defaults = {
     "user" => "ubuntu"
