@@ -1,9 +1,9 @@
 [submodule "puppet/modules/cpan"]
 	path = puppet/modules/cpan
-	url = git@github.com:meltwater/puppet-cpan.git
+	url = https://github.com:meltwater/puppet-cpan.git
 [submodule "puppet/modules/rbenv"]
 	path = puppet/modules/rbenv
-	url = git@github.com:alup/puppet-rbenv.git
+	url = https://github.com:alup/puppet-rbenv.git
 [submodule "puppet/modules/rabbitmq"]
 	path = puppet/modules/rabbitmq
 	url = https://github.com/puppetlabs/puppetlabs-rabbitmq.git
