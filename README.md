@@ -1,13 +1,20 @@
 # Parcelles
 
-Utilizes packer to quickly provision VM images for local testing through Virtualbox or Amazon EC2 AMIs for deployment and staging environments.
+Utilizes packer to quickly provision VM images for local testing through Virtualbox, QEMU, or Amazon EC2 AMIs for deployment and staging environments.
 
 Requires packer >= 0.3.9 for Amazon block device mapping support and Puppet masterless provisioning.
+Requires packer >= 0.5.0 for QEMU provisioning.
 
 To generate an image simply run packer specifying the builder and the packer template file. We've included a example template to get the ball rolling.
 
 ```bash
 packer build --only=virtualbox example.json 
+```
+
+or
+
+```bash
+packer build --only=qemu example.json 
 ```
 
 or
