@@ -7,13 +7,13 @@ node default {
 
   include base
 
-  include nginx
+  #include nginx
 
-  include mysql
+  #include mysql
   #include mongodb
 
   #include php
-  class { "ruby":
-    version => "2.0.0-p353"
-  }
+  #class { "ruby":
+  #version => "2.0.0-p353"
+  #}
 }

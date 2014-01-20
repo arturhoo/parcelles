@@ -28,6 +28,37 @@
             "ssh_password": "ubuntu"
         },
         {
+            "type": "qemu",
+            "headless": true,
+            "accelerator": "kvm",
+
+            "vm_name": "ubuntu-packer",
+            "format": "qcow2",
+            "disk_size": 8192,
+            "http_directory": "http",
+
+            "iso_url": "http://releases.ubuntu.com/precise/ubuntu-12.04.3-server-amd64.iso",
+            "iso_checksum": "2cbe868812a871242cdcdd8f2fd6feb9",
+            "iso_checksum_type": "md5",
+
+            "boot_command": [
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us <wait>",
+                "hostname={{ .Name }} <wait>",
+                "fb=false debconf/frontend=noninteractive <wait>",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false <wait>",
+                "initrd=/install/initrd.gz -- <enter><wait>"
+            ],
+            "qemuargs": [
+                ["-no-reboot"]
+            ],
+            "shutdown_command": "sudo poweroff",
+
+            "ssh_username": "ubuntu",
+            "ssh_password": "ubuntu"
+        },
+        {
             "type": "amazon-ebs",
 
             "ami_name": "ubuntu-packer-{{ timestamp }}",
@@ -74,6 +105,13 @@
             "type": "shell",
             "override": {
                 "virtualbox": {
+                    "execute_command": "echo 'ubuntu' | sudo -S bash {{ .Path }}",
+                    "scripts": [
+                        "scripts/non-aws.sh",
+                        "scripts/puppet.sh"
+                    ]
+                },
+                "qemu": {
                     "execute_command": "echo 'ubuntu' | sudo -S bash {{ .Path }}",
                     "scripts": [
                         "scripts/non-aws.sh",
