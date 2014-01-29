@@ -73,7 +73,7 @@ class base {
   augeas { "timestamp":
     lens => "Shellvars.lns",
     incl => "/etc/profile",
-    changes => "set /files/etc/profile/HISTTIMEFORMAT '\"%F %T\"'"
+    changes => "set /files/etc/profile/HISTTIMEFORMAT '\"%F %T \"'"
   }
 
   # Prevent time slips syncing with ntp.
