@@ -51,7 +51,10 @@
                 "initrd=/install/initrd.gz -- <enter><wait>"
             ],
             "qemuargs": [
-                ["-no-reboot"]
+                ["-no-reboot"],
+                ["-m", "1024M"],
+                ["-cpu", "host"],
+                ["-smp", 2]
             ],
             "shutdown_command": "sudo poweroff",
 
