@@ -12,4 +12,8 @@ apt-get update
 
 apt-get install puppet -y
 
-mv /home/ubuntu/hieradata /etc/puppet
+if [ -d '/home/ubuntu/hieradata' ]; then
+    mv /home/ubuntu/hieradata /etc/puppet
+else
+    mkdir -p /etc/puppet/hieradata
+fi
