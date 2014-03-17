@@ -17,7 +17,7 @@ eval $TIMESTAMP
 # Configure basic packages to install non interactively
 apt-get update
 
-apt-get install build-essential curl git htop ntp tmux unzip vim -y
+apt-get install python-software-properties build-essential curl git htop ntp tmux unzip vim -y
 
 # Install and configure unattended upgrades
 apt-get install unattended-upgrades -y
