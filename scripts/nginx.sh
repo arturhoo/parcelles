@@ -5,16 +5,11 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+add-apt-repository -y ppa:nginx/stable
+apt-get update
+apt-get install nginx
+
 mkdir -p /srv/www
-
-if [ -b /dev/xvdg ]; then
-    (echo n; echo p; echo 1; echo ; echo ; echo w;) | fdisk /dev/xvdg
-    mkfs.ext4 /dev/xvdg1
-    echo "/dev/xvdg1      /srv/www ext4 noatime,noexec,nodiratime 0 0" >> /etc/fstab
-    mount -a
-fi
-
 chown -R www-data:www-data /srv/www
 chmod -R 755 /srv/www
-
 usermod -G www-data ubuntu

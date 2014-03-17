@@ -11,14 +11,13 @@ hwclock --systohc
 
 # Enable bash history timestamping
 TIMESTAMP='export HISTTIMEFORMAT="%F %T "'
-echo $TIMESTAMP | sudo tee -a /etc/profile
+echo $TIMESTAMP | tee -a /etc/profile
 eval $TIMESTAMP
 
 # Configure basic packages to install non interactively
-add-apt-repository -y ppa:nginx/stable
 apt-get update
 
-apt-get install build-essential curl git htop nginx ntp tmux unzip vim -y
+apt-get install build-essential curl git htop ntp tmux unzip vim -y
 
 # Install and configure unattended upgrades
 apt-get install unattended-upgrades -y
@@ -39,7 +38,7 @@ update-alternatives --set editor /usr/bin/vim.basic
 
 # Keep long SSH connections running, especially for assets precompilation
 echo "AllowAgentForwarding yes
- 
+
 ClientAliveInterval 60
 ClientAliveCountMax 60" | tee -a /etc/ssh/sshd_config
 service ssh restart
