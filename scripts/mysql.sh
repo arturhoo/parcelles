@@ -8,4 +8,4 @@ fi
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install mysql-server libmysql++-dev -y
 
-sudo -u ubuntu mysql -uroot --execute="grant all privileges on *.* to '$USER'@'localhost'"
+mysql -uroot --execute="grant all privileges on *.* to 'ubuntu'@'localhost'"
