@@ -5,22 +5,18 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-# Sync clock
-ntpdate ntp.ubuntu.com
-hwclock --systohc
-
 # Enable bash history timestamping
 TIMESTAMP='export HISTTIMEFORMAT="%F %T "'
 echo $TIMESTAMP | tee -a /etc/profile
 eval $TIMESTAMP
 
 # Configure basic packages to install non interactively
-apt-get update
+apt-get update -q
 
-apt-get install python-software-properties build-essential curl git htop ntp tmux unzip vim -y
+apt-get install python-software-properties build-essential curl git htop ntp \
+                tmux unzip vim unattended-upgrades -q -y
 
-# Install and configure unattended upgrades
-apt-get install unattended-upgrades -y
+# Configure unattended upgrades
 echo "APT::Periodic::Update-Package-Lists \"1\";
 APT::Periodic::Download-Upgradeable-Packages \"1\";
 APT::Periodic::AutocleanInterval \"7\";
@@ -31,7 +27,9 @@ echo "Unattended-Upgrade::Allowed-Origins {
 };" | tee /etc/apt/apt.conf.d/50unattended-upgrades
 
 # Make sure server has the most up-to-date packages and kernel
-DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" \
+                                       -o Dpkg::Options::="--force-confold" \
+                                       -y -q dist-upgrade
 
 # Make vim the default editor
 update-alternatives --set editor /usr/bin/vim.basic

@@ -6,8 +6,8 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 add-apt-repository -y ppa:nginx/stable
-apt-get update
-apt-get install nginx
+apt-get update -q
+apt-get install nginx -q -y
 
 mkdir -p /srv/www
 chown -R www-data:www-data /srv/www
