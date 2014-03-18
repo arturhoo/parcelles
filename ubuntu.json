@@ -35,7 +35,22 @@
       "shutdown_command": "sudo poweroff",
       "ssh_password": "ubuntu",
       "ssh_username": "ubuntu",
+      "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
       "vm_name": "ubuntu-packer"
     },
     {
