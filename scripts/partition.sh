@@ -7,8 +7,8 @@ fi
 
 # MySQL or MongoDB partition
 if [ -b /dev/xvdf ]; then
-    apt-get update
-    apt-get install xfsprogs -y
+    apt-get update -q
+    apt-get install xfsprogs -q -y
     (echo n; echo p; echo 1; echo ; echo ; echo w;) | fdisk /dev/xvdf
     mkfs.xfs /dev/xvdf1
 fi

@@ -5,8 +5,8 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-apt-get update
-apt-get install xfsprogs -y
+apt-get update -q
+apt-get install xfsprogs -q -y
 
 if [ -b /dev/xvdf ]; then
     (echo n; echo p; echo 1; echo ; echo ; echo w;) | fdisk /dev/xvdf

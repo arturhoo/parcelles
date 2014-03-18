@@ -5,9 +5,9 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-apt-get -q update
-apt-get -q -y install autoconf automake build-essential git libass-dev libgpac-dev \
-  libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev
+apt-get update -q
+apt-get install autoconf automake build-essential git libass-dev libgpac-dev \
+  libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev -q -y
 mkdir ~/ffmpeg_sources
 
 # YASM
@@ -41,7 +41,7 @@ make install
 make distclean
 
 # libmp3lame
-apt-get -q -y install libmp3lame-dev
+apt-get install libmp3lame-dev -q -y
 
 # libopus
 cd ~/ffmpeg_sources

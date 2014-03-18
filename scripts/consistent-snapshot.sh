@@ -6,8 +6,8 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 add-apt-repository -y ppa:alestic
-apt-get update
-apt-get install liblocal-lib-perl ec2-consistent-snapshot -y
+apt-get update -q
+apt-get install liblocal-lib-perl ec2-consistent-snapshot -q -y
 
 PERL_MM_USE_DEFAULT=1 cpan Net::Amazon::EC2
 PERL_MM_USE_DEFAULT=1 cpan -fi MongoDB MongoDB::Admin
