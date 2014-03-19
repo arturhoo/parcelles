@@ -149,7 +149,7 @@
             "scripts/puppet.sh"
           ]
         },
-        "virtualbox": {
+        "virtualbox-iso": {
           "execute_command": "echo 'ubuntu' | sudo -S bash {{ .Path }}",
           "scripts": [
             "scripts/non-aws.sh",
