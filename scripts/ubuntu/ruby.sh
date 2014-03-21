@@ -5,8 +5,14 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-su - ubuntu -c 'rbenv install 2.1.1'
-su - ubuntu -c 'rbenv global 2.1.1'
 su - ubuntu -c 'echo "gem: --no-ri --no-rdoc" >> ~/.gemrc'
-su - ubuntu -c 'gem install bundler'
-su - ubuntu -c 'rbenv rehash'
+
+for version in $rubies
+do
+    su - ubuntu <<EOF
+    rbenv install $version
+    rbenv global $version
+    gem install bundler
+    rbenv rehash
+EOF
+done
