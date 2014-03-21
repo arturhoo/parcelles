@@ -12,4 +12,4 @@ apt-get install nginx -q -y
 mkdir -p /srv/www
 chown -R www-data:www-data /srv/www
 chmod -R 755 /srv/www
-usermod -G www-data ubuntu
+usermod -a -G www-data ubuntu
