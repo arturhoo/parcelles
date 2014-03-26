@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eux
 
 if [ "$(id -u)" != "0" ]; then
     echo Needs to run as root. 1>&2

@@ -2,3 +2,4 @@ packer_cache
 output-virtualbox
 output-qemu
 puppet/hieradata/*.yaml
+builds/

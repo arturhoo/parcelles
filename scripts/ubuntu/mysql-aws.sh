@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/bin/bash -eux
 
 if [ "$(id -u)" != "0" ]; then
     echo Needs to run as root. 1>&2
     exit 1
 fi
 
-apt-get update -q
-apt-get install xfsprogs -q -y
+apt-get install xfsprogs -qy
 
 if [ -b /dev/xvdf ]; then
     (echo n; echo p; echo 1; echo ; echo ; echo w;) | fdisk /dev/xvdf
