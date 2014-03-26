@@ -4,37 +4,35 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-6.5/ks.cfg<enter><wait>"
       ],
-      "boot_wait": "10s",
       "disk_size": 8192,
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "guest_os_type": "RedHat_64",
+      "headless": false,
       "http_directory": "http",
       "iso_checksum": "32c7695b97f7dcd1f59a77a71f64f2957dddf738",
       "iso_checksum_type": "sha1",
       "iso_url": "{{user `mirror`}}/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso",
-      "output_directory": "packer-centos-6.5-x86_64-virtualbox",
-      "shutdown_command": "echo 'vagrant'|sudo -S /sbin/halt -h -p",
-      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'centos' | sudo -S /sbin/halt -h -p",
+      "ssh_password": "centos",
       "ssh_port": 22,
-      "ssh_username": "vagrant",
-      "ssh_wait_timeout": "10000s",
+      "ssh_username": "centos",
       "type": "virtualbox-iso",
       "vboxmanage": [
         [
           "modifyvm",
           "{{.Name}}",
           "--memory",
-          "480"
+          "1024"
         ],
         [
           "modifyvm",
           "{{.Name}}",
           "--cpus",
-          "1"
+          "2"
         ]
       ],
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "centos-packer"
+      "vm_name": "centos-6.5"
     },
     {
       "accelerator": "kvm",
@@ -64,21 +62,54 @@
         ]
       ],
       "output_directory": "packer-centos-6.5-x86_64-qemu",
-      "shutdown_command": "echo 'centos'|sudo -S /sbin/halt -h -p",
+      "shutdown_command": "echo 'centos' | sudo -S /sbin/halt -h -p",
       "ssh_password": "centos",
       "ssh_username": "centos",
       "ssh_wait_timeout": "10000s",
       "type": "qemu",
-      "vm_name": "centos-packer"
+      "vm_name": "centos-6.5"
+    }
+  ],
+  "post-processors": [
+    {
+      "only": [
+        "virtualbox-iso"
+      ],
+      "output": "./builds/{{.Provider}}/centos-6.5.box",
+      "type": "vagrant",
+      "vagrantfile_template": "templates/centos-6.5.template"
     }
   ],
   "provisioners": [
     {
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "type": "shell",
-      "inline": ["echo finished"]
+      "scripts": [
+        "scripts/centos/update.sh"
+      ]
+    },
+    {
+      "execute_command": "echo 'centos' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "only": [
+        "virtualbox-iso"
+      ],
+      "scripts": [
+        "scripts/centos/fix-slow-dns.sh",
+        "scripts/centos/vagrant.sh",
+        "scripts/centos/vboxga.sh",
+        "scripts/common/cleanup.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "execute_command": "echo 'centos' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "type": "shell",
+      "scripts": [
+        "scripts/centos/networking.sh"
+      ]
     }
   ],
   "variables": {
-    "mirror": "http://mirrors.kernel.org/centos"
+    "mirror": "http://centos.ufms.br"
   }
 }
