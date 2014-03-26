@@ -100,7 +100,7 @@
           2
         ]
       ],
-      "shutdown_command": "sudo poweroff",
+      "shutdown_command": "sudo -S shutdown -P now",
       "ssh_password": "ubuntu",
       "ssh_username": "ubuntu",
       "ssh_wait_timeout": "10000s",
@@ -109,8 +109,8 @@
     },
     {
       "ami_description": "Packer generated AMI",
-      "ami_name": "parcelles-ruby-mysql-{{ timestamp }}",
-      "instance_type": "c3.large",
+      "ami_name": "ubuntu-precise-ruby-mysql{{ timestamp }}",
+      "instance_type": "c3.xlarge",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
@@ -141,7 +141,8 @@
         "virtualbox-iso"
       ],
       "output": "./builds/{{.Provider}}/parcelles-ruby-mysql.box",
-      "type": "vagrant"
+      "type": "vagrant",
+      "vagrantfile_template": "templates/ubuntu-precise.template"
     }
   ],
   "provisioners": [
@@ -168,7 +169,6 @@
       "pause_before": "40s",
       "scripts": [
         "scripts/ubuntu/base.sh",
-        "scripts/ubuntu/networking.sh",
         "scripts/ubuntu/nginx.sh",
         "scripts/ubuntu/rbenv.sh",
         "scripts/ubuntu/ruby.sh"
@@ -188,6 +188,14 @@
       "scripts": [
         "scripts/ubuntu/mysql.sh"
       ],
+      "type": "shell"
+    },
+    {
+      "except": [
+        "amazon-ebs"
+      ],
+      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/ubuntu/networking.sh",
       "type": "shell"
     },
     {

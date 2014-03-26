@@ -110,7 +110,7 @@
     {
       "ami_description": "Packer generated AMI",
       "ami_name": "ubuntu-precise-{{ timestamp }}",
-      "instance_type": "c3.large",
+      "instance_type": "c3.xlarge",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
@@ -159,9 +159,16 @@
       "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "pause_before": "40s",
       "scripts": [
-        "scripts/ubuntu/base.sh",
-        "scripts/ubuntu/networking.sh"
+        "scripts/ubuntu/base.sh"
       ],
+      "type": "shell"
+    },
+    {
+      "except": [
+        "amazon-ebs"
+      ],
+      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/ubuntu/networking.sh",
       "type": "shell"
     },
     {
