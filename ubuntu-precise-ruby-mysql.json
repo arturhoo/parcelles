@@ -165,7 +165,7 @@
         "rubies='{{user `rubies`}}'"
       ],
       "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "pause_before": "30s",
+      "pause_before": "40s",
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/ubuntu/networking.sh",
