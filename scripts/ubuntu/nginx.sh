@@ -7,7 +7,7 @@ fi
 
 add-apt-repository -y ppa:nginx/stable
 apt-get update -q
-apt-get install nginx -q -y
+apt-get install nginx -qy
 
 mkdir -p /srv/www
 chown -R www-data:www-data /srv/www

@@ -127,16 +127,10 @@
           "device_name": "/dev/sdf",
           "volume_size": 10,
           "volume_type": "standard"
-        },
-        {
-          "delete_on_termination": true,
-          "device_name": "/dev/sdg",
-          "volume_size": 10,
-          "volume_type": "standard"
         }
       ],
       "region": "us-west-1",
-      "source_ami": "ami-fe002cbb",
+      "source_ami": "ami-660c3023",
       "ssh_username": "ubuntu",
       "type": "amazon-ebs"
     }
@@ -177,7 +171,21 @@
         "scripts/ubuntu/networking.sh",
         "scripts/ubuntu/nginx.sh",
         "scripts/ubuntu/rbenv.sh",
-        "scripts/ubuntu/ruby.sh",
+        "scripts/ubuntu/ruby.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "override": {
+        "amazon-ebs": {
+          "scripts": [
+            "scripts/ubuntu/mysql-aws.sh",
+            "scripts/ubuntu/mysql.sh"
+          ]
+        }
+      },
+      "scripts": [
         "scripts/ubuntu/mysql.sh"
       ],
       "type": "shell"
