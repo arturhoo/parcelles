@@ -1,10 +1,5 @@
 #!/bin/bash -eux
 
-if [ "$(id -u)" != "0" ]; then
-    echo Needs to run as root. 1>&2
-    exit 1
-fi
-
 apt-get install php-pear php5 php5-cgi php5-curl php5-fpm php5-gd php5-idn \
                 php5-imagick php5-imap php5-intl php5-mcrypt php5-memcache \
                 php5-ming php5-mysql php5-ps php5-pspell php5-recode \

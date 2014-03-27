@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ "$(id -u)" != "0" ]; then
-    echo Needs to run as root. 1>&2
-    exit 1
-fi
-
 apt-get update -q
 apt-get install autoconf automake build-essential git libass-dev libgpac-dev \
   libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev -q -y

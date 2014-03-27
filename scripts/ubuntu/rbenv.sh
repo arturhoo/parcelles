@@ -1,10 +1,5 @@
 #!/bin/bash -eux
 
-if [ "$(id -u)" != "0" ]; then
-    echo Needs to run as root. 1>&2
-    exit 1
-fi
-
 apt-add-repository -y ppa:webupd8team/java
 apt-get update -q
 echo debconf shared/accepted-oracle-license-v1-1 select true | \

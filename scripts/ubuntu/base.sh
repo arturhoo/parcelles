@@ -1,10 +1,5 @@
 #!/bin/bash -eux
 
-if [ "$(id -u)" != "0" ]; then
-    echo Needs to run as root. 1>&2
-    exit 1
-fi
-
 # Enable bash history timestamping
 TIMESTAMP='export HISTTIMEFORMAT="%F %T "'
 echo $TIMESTAMP | tee -a /etc/profile
