@@ -95,8 +95,8 @@
       ],
       "scripts": [
         "scripts/centos/fix-slow-dns.sh",
-        "scripts/centos/vagrant.sh",
-        "scripts/centos/vboxga.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/common/vboxga.sh",
         "scripts/common/cleanup.sh"
       ],
       "type": "shell"

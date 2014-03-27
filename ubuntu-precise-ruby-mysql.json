@@ -171,7 +171,7 @@
         "scripts/ubuntu/base.sh",
         "scripts/ubuntu/nginx.sh",
         "scripts/ubuntu/rbenv.sh",
-        "scripts/ubuntu/ruby.sh"
+        "scripts/common/ruby.sh"
       ],
       "type": "shell"
     },
@@ -204,8 +204,8 @@
         "virtualbox-iso"
       ],
       "scripts": [
-        "scripts/ubuntu/vagrant.sh",
-        "scripts/ubuntu/vboxga.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/common/vboxga.sh",
         "scripts/common/cleanup.sh"
       ],
       "type": "shell"

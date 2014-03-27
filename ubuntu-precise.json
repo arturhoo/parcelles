@@ -177,8 +177,8 @@
         "virtualbox-iso"
       ],
       "scripts": [
-        "scripts/ubuntu/vagrant.sh",
-        "scripts/ubuntu/vboxga.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/common/vboxga.sh",
         "scripts/common/cleanup.sh"
       ],
       "type": "shell"
