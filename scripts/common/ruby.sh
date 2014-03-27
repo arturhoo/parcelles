@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-OS_USER=$(logname)
+OS_USER="$SUDO_USER"
 
 su - $OS_USER -c 'echo "gem: --no-ri --no-rdoc" >> ~/.gemrc'
 

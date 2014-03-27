@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-OS_USER=$(logname)
+OS_USER="$SUDO_USER"
 
 mkdir /tmp/vbox
 VER=$(cat /home/$OS_USER/.vbox_version)

@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-OS_USER=$(logname)
+OS_USER="$SUDO_USER"
 
 mkdir /home/$OS_USER/.ssh
 wget --no-check-certificate \
