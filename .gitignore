@@ -1,5 +1,5 @@
 packer_cache
-output-virtualbox
+output-virtualbox-iso
 output-qemu
 puppet/hieradata/*.yaml
 builds/
