@@ -12,6 +12,7 @@
       "iso_checksum": "32c7695b97f7dcd1f59a77a71f64f2957dddf738",
       "iso_checksum_type": "sha1",
       "iso_url": "{{user `mirror`}}/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso",
+      "output_directory": "packer-centos-6.5-virtualbox",
       "shutdown_command": "echo 'centos' | sudo -S /sbin/halt -h -p",
       "ssh_password": "centos",
       "ssh_port": 22,
@@ -47,6 +48,7 @@
       "iso_checksum": "32c7695b97f7dcd1f59a77a71f64f2957dddf738",
       "iso_checksum_type": "sha1",
       "iso_url": "{{user `mirror`}}/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso",
+      "output_directory": "packer-centos-6.5-qemu",
       "qemuargs": [
         [
           "-m",
@@ -61,7 +63,6 @@
           2
         ]
       ],
-      "output_directory": "packer-centos-6.5-x86_64-qemu",
       "shutdown_command": "echo 'centos' | sudo -S /sbin/halt -h -p",
       "ssh_password": "centos",
       "ssh_username": "centos",
@@ -83,10 +84,10 @@
   "provisioners": [
     {
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "type": "shell",
       "scripts": [
         "scripts/centos/update.sh"
-      ]
+      ],
+      "type": "shell"
     },
     {
       "execute_command": "echo 'centos' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
@@ -103,13 +104,14 @@
     },
     {
       "execute_command": "echo 'centos' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "type": "shell",
       "scripts": [
         "scripts/centos/networking.sh"
-      ]
+      ],
+      "type": "shell"
     }
   ],
   "variables": {
     "mirror": "http://centos.ufms.br"
   }
 }
+
