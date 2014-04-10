@@ -1,6 +1,22 @@
 {
+  "variables": {
+    "name": "ubuntu-precise",
+    "disk_size": 8192,
+    "mirror": "http://mirror.globo.com/ubuntu/releases"
+  },
   "builders": [
     {
+      "vm_name": "{{ user `name` }}",
+      "type": "virtualbox-iso",
+      "disk_size": "{{ user `disk_size` }}",
+      "output_directory": "{{ user `name` }}-virtualbox",
+      "headless": false,
+      "guest_os_type": "Ubuntu_64",
+      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{ user `mirror` }}/12.04/ubuntu-12.04.4-server-amd64.iso",
+      "http_directory": "http",
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -19,43 +35,41 @@
         " keyboard-configuration/variant=USA<wait>",
         " locale=en_US<wait>",
         " netcfg/get_domain=vm<wait>",
-        " netcfg/get_hostname={{.Name}}<wait>",
+        " netcfg/get_hostname={{ .Name }}<wait>",
         " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-12.04/preseed.cfg<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
-      "disk_size": 8192,
-      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
-      "guest_os_type": "Ubuntu_64",
-      "headless": false,
-      "http_directory": "http",
-      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{user `mirror`}}/12.04/ubuntu-12.04.4-server-amd64.iso",
-      "output_directory": "packer-ubuntu-precise-virtualbox",
       "shutdown_command": "sudo -S shutdown -P now",
       "ssh_password": "ubuntu",
       "ssh_username": "ubuntu",
-      "type": "virtualbox-iso",
       "vboxmanage": [
         [
           "modifyvm",
-          "{{.Name}}",
+          "{{ .Name }}",
           "--memory",
           "1024"
         ],
         [
           "modifyvm",
-          "{{.Name}}",
+          "{{ .Name }}",
           "--cpus",
           "2"
         ]
-      ],
-      "vm_name": "ubuntu-precise"
+      ]
     },
     {
-      "accelerator": "kvm",
+      "vm_name": "{{ user `name` }}",
+      "type": "qemu",
+      "disk_size": "{{ user `disk_size` }}",
+      "format": "qcow2",
+      "output_directory": "{{ user `name` }}-qemu",
+      "headless": true,
+      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{ user `mirror` }}/12.04/ubuntu-12.04.4-server-amd64.iso",
+      "http_directory": "http",
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -74,20 +88,17 @@
         " keyboard-configuration/variant=USA<wait>",
         " locale=en_US<wait>",
         " netcfg/get_domain=vm<wait>",
-        " netcfg/get_hostname={{.Name}}<wait>",
+        " netcfg/get_hostname={{ .Name }}<wait>",
         " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-12.04/preseed.cfg<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
-      "disk_size": 8192,
-      "format": "qcow2",
-      "headless": true,
-      "http_directory": "http",
-      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{user `mirror`}}/12.04/ubuntu-12.04.4-server-amd64.iso",
-      "output_directory": "packer-ubuntu-precise-qemu",
+      "shutdown_command": "sudo -S shutdown -P now",
+      "ssh_password": "ubuntu",
+      "ssh_username": "ubuntu",
+      "ssh_wait_timeout": "10000s",
+      "accelerator": "kvm",
       "qemuargs": [
         [
           "-m",
@@ -101,18 +112,12 @@
           "-smp",
           2
         ]
-      ],
-      "shutdown_command": "sudo -S shutdown -P now",
-      "ssh_password": "ubuntu",
-      "ssh_username": "ubuntu",
-      "ssh_wait_timeout": "10000s",
-      "type": "qemu",
-      "vm_name": "ubuntu-precise"
+      ]
     },
     {
+      "type": "amazon-ebs",
+      "ami_name": "{{ user `name` }}-{{ timestamp }}",
       "ami_description": "Packer generated AMI",
-      "ami_name": "ubuntu-precise-{{ timestamp }}",
-      "instance_type": "c3.xlarge",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
@@ -126,19 +131,9 @@
         }
       ],
       "region": "us-west-1",
+      "instance_type": "c3.xlarge",
       "source_ami": "ami-660c3023",
-      "ssh_username": "ubuntu",
-      "type": "amazon-ebs"
-    }
-  ],
-  "post-processors": [
-    {
-      "only": [
-        "virtualbox-iso"
-      ],
-      "output": "./builds/{{.Provider}}/ubuntu-precise.box",
-      "type": "vagrant",
-      "vagrantfile_template": "templates/ubuntu-precise.template"
+      "ssh_username": "ubuntu"
     }
   ],
   "provisioners": [
@@ -146,19 +141,19 @@
       "except": [
         "amazon-ebs"
       ],
-      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/ubuntu/non-aws.sh",
       "type": "shell"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
       "scripts": [
         "scripts/ubuntu/dist-upgrade.sh"
       ],
       "type": "shell"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
       "pause_before": "40s",
       "scripts": [
         "scripts/ubuntu/base.sh"
@@ -169,12 +164,12 @@
       "except": [
         "amazon-ebs"
       ],
-      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/ubuntu/networking.sh",
       "type": "shell"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
       "only": [
         "virtualbox-iso"
       ],
@@ -186,8 +181,14 @@
       "type": "shell"
     }
   ],
-  "variables": {
-    "mirror": "http://mirror.globo.com/ubuntu/releases"
-  }
+  "post-processors": [
+    {
+      "only": [
+        "virtualbox-iso"
+      ],
+      "output": "./builds/{{ .Provider }}/{{ user `name` }}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "templates/ubuntu-precise.template"
+    }
+  ]
 }
-
