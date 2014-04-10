@@ -10,14 +10,22 @@ apt-get install python-software-properties build-essential curl git htop ntp \
                 dkms -qy
 
 # Configure unattended upgrades
-echo "APT::Periodic::Update-Package-Lists \"1\";
-APT::Periodic::Download-Upgradeable-Packages \"1\";
-APT::Periodic::AutocleanInterval \"7\";
-APT::Periodic::Unattended-Upgrade \"1\";" | tee /etc/apt/apt.conf.d/10periodic
-echo "Unattended-Upgrade::Allowed-Origins {
-    \"Ubuntu precise-security\";
-//  \"Ubuntu precise-updates\";
-};" | tee /etc/apt/apt.conf.d/50unattended-upgrades
+read -d '' PERIODIC10 <<"EOF"
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "7";
+APT::Periodic::Unattended-Upgrade "1";
+EOF
+echo "$PERIODIC10" | tee /etc/apt/apt.conf.d/10periodic
+
+# Configure unattended upgrades
+read -d '' PERIODIC50 <<"EOF"
+Unattended-Upgrade::Allowed-Origins {
+        "Ubuntu precise-security";
+//      "Ubuntu precise-updates";
+};
+EOF
+echo "$PERIODIC50" | tee /etc/apt/apt.conf.d/50unattended-upgrades
 
 # Make vim the default editor
 update-alternatives --set editor /usr/bin/vim.basic
