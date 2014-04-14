@@ -52,7 +52,7 @@
           "2"
         ]
       ],
-      "vm_name": "parcelles-ruby-mysql"
+      "vm_name": "ubuntu-precise-ruby-mysql"
     },
     {
       "accelerator": "kvm",
@@ -107,7 +107,7 @@
       "ssh_username": "ubuntu",
       "ssh_wait_timeout": "10000s",
       "type": "qemu",
-      "vm_name": "parcelles-ruby-mysql"
+      "vm_name": "ubuntu-precise-ruby-mysql"
     },
     {
       "ami_description": "Packer generated AMI",
@@ -142,7 +142,7 @@
       "only": [
         "virtualbox-iso"
       ],
-      "output": "./builds/{{.Provider}}/parcelles-ruby-mysql.box",
+      "output": "./builds/{{.Provider}}/ubuntu-precise-ruby-mysql.box",
       "type": "vagrant",
       "vagrantfile_template": "templates/ubuntu-precise.template"
     }
@@ -164,11 +164,16 @@
       "type": "shell"
     },
     {
+      "destination": "/tmp/nginx.conf",
+      "pause_before": "40s",
+      "source": "templates/nginx.conf.template",
+      "type": "file"
+    },
+    {
       "environment_vars": [
         "rubies='{{user `rubies`}}'"
       ],
       "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "pause_before": "40s",
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/ubuntu/nginx.sh",
