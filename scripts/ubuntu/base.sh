@@ -5,6 +5,7 @@ TIMESTAMP='export HISTTIMEFORMAT="%F %T "'
 echo $TIMESTAMP | tee -a /etc/profile
 eval $TIMESTAMP
 
+apt-get update -q
 apt-get install python-software-properties build-essential curl git htop ntp \
                 tmux unzip vim unattended-upgrades linux-headers-$(uname -r) \
                 dkms -qy

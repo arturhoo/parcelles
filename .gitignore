@@ -3,3 +3,4 @@ output-virtualbox-iso
 output-qemu
 puppet/hieradata/*.yaml
 builds/
+templates/authorized_keys.template

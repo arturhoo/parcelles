@@ -170,12 +170,18 @@
       "type": "file"
     },
     {
+      "destination": "/tmp/authorized_keys",
+      "source": "templates/{{user `authorized_keys_template`}}",
+      "type": "file"
+    },
+    {
       "environment_vars": [
         "rubies='{{user `rubies`}}'"
       ],
       "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
         "scripts/ubuntu/base.sh",
+        "scripts/common/authorized_keys.sh",
         "scripts/ubuntu/nginx.sh",
         "scripts/ubuntu/rbenv.sh",
         "scripts/common/ruby.sh"
@@ -219,6 +225,7 @@
     }
   ],
   "variables": {
+    "authorized_keys_template": "authorized_keys.template.example",
     "mirror": "http://mirror.globo.com/ubuntu/releases",
     "rubies": "2.1.1 2.1.0 2.0.0-p451 1.9.3-p484"
   }

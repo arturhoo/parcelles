@@ -1,22 +1,6 @@
 {
-  "variables": {
-    "name": "ubuntu-precise",
-    "disk_size": 8192,
-    "mirror": "http://mirror.globo.com/ubuntu/releases"
-  },
   "builders": [
     {
-      "vm_name": "{{ user `name` }}",
-      "type": "virtualbox-iso",
-      "disk_size": "{{ user `disk_size` }}",
-      "output_directory": "{{ user `name` }}-virtualbox",
-      "headless": false,
-      "guest_os_type": "Ubuntu_64",
-      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
-      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{ user `mirror` }}/12.04/ubuntu-12.04.4-server-amd64.iso",
-      "http_directory": "http",
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -41,9 +25,19 @@
         " -- <wait>",
         "<enter><wait>"
       ],
+      "disk_size": "{{ user `disk_size` }}",
+      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+      "guest_os_type": "Ubuntu_64",
+      "headless": false,
+      "http_directory": "http",
+      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{ user `mirror` }}/12.04/ubuntu-12.04.4-server-amd64.iso",
+      "output_directory": "{{ user `name` }}-virtualbox",
       "shutdown_command": "sudo -S shutdown -P now",
       "ssh_password": "ubuntu",
       "ssh_username": "ubuntu",
+      "type": "virtualbox-iso",
       "vboxmanage": [
         [
           "modifyvm",
@@ -57,19 +51,11 @@
           "--cpus",
           "2"
         ]
-      ]
+      ],
+      "vm_name": "{{ user `name` }}"
     },
     {
-      "vm_name": "{{ user `name` }}",
-      "type": "qemu",
-      "disk_size": "{{ user `disk_size` }}",
-      "format": "qcow2",
-      "output_directory": "{{ user `name` }}-qemu",
-      "headless": true,
-      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{ user `mirror` }}/12.04/ubuntu-12.04.4-server-amd64.iso",
-      "http_directory": "http",
+      "accelerator": "kvm",
       "boot_command": [
         "<esc><wait>",
         "<esc><wait>",
@@ -94,11 +80,14 @@
         " -- <wait>",
         "<enter><wait>"
       ],
-      "shutdown_command": "sudo -S shutdown -P now",
-      "ssh_password": "ubuntu",
-      "ssh_username": "ubuntu",
-      "ssh_wait_timeout": "10000s",
-      "accelerator": "kvm",
+      "disk_size": "{{ user `disk_size` }}",
+      "format": "qcow2",
+      "headless": true,
+      "http_directory": "http",
+      "iso_checksum": "b802bb065df98c0530d782eb94778c2da19e10d6",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{ user `mirror` }}/12.04/ubuntu-12.04.4-server-amd64.iso",
+      "output_directory": "{{ user `name` }}-qemu",
       "qemuargs": [
         [
           "-m",
@@ -112,12 +101,18 @@
           "-smp",
           2
         ]
-      ]
+      ],
+      "shutdown_command": "sudo -S shutdown -P now",
+      "ssh_password": "ubuntu",
+      "ssh_username": "ubuntu",
+      "ssh_wait_timeout": "10000s",
+      "type": "qemu",
+      "vm_name": "{{ user `name` }}"
     },
     {
-      "type": "amazon-ebs",
-      "ami_name": "{{ user `name` }}-{{ timestamp }}",
       "ami_description": "Packer generated AMI",
+      "ami_name": "{{ user `name` }}-{{ timestamp }}",
+      "instance_type": "c3.xlarge",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
@@ -131,9 +126,19 @@
         }
       ],
       "region": "us-west-1",
-      "instance_type": "c3.xlarge",
       "source_ami": "ami-660c3023",
-      "ssh_username": "ubuntu"
+      "ssh_username": "ubuntu",
+      "type": "amazon-ebs"
+    }
+  ],
+  "post-processors": [
+    {
+      "only": [
+        "virtualbox-iso"
+      ],
+      "output": "./builds/{{ .Provider }}/{{ user `name` }}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "templates/ubuntu-precise.template"
     }
   ],
   "provisioners": [
@@ -153,10 +158,16 @@
       "type": "shell"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
+      "destination": "/tmp/authorized_keys",
       "pause_before": "40s",
+      "source": "templates/{{user `authorized_keys_template`}}",
+      "type": "file"
+    },
+    {
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
       "scripts": [
-        "scripts/ubuntu/base.sh"
+        "scripts/ubuntu/base.sh",
+        "scripts/common/authorized_keys.sh"
       ],
       "type": "shell"
     },
@@ -181,14 +192,11 @@
       "type": "shell"
     }
   ],
-  "post-processors": [
-    {
-      "only": [
-        "virtualbox-iso"
-      ],
-      "output": "./builds/{{ .Provider }}/{{ user `name` }}.box",
-      "type": "vagrant",
-      "vagrantfile_template": "templates/ubuntu-precise.template"
-    }
-  ]
+  "variables": {
+    "authorized_keys_template": "authorized_keys.template.example",
+    "disk_size": 8192,
+    "mirror": "http://mirror.globo.com/ubuntu/releases",
+    "name": "ubuntu-precise"
+  }
 }
+
