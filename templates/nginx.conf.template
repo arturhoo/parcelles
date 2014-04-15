@@ -32,6 +32,9 @@ http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
 
+    # Sets the bucket size for the types hash tables.
+    types_hash_max_size 2048;
+
     # Update charset_types due to updated mime.types
     charset_types text/xml text/plain text/vnd.wap.wml application/x-javascript application/rss+xml text/css application/javascript application/json;
 
@@ -59,7 +62,7 @@ http {
     # Tell Nginx to enable the Nagle buffering algorithm for TCP packets, which
     # collates several smaller packets together into one larger packet, thus saving
     # bandwidth at the cost of a nearly imperceptible increase to latency. (removes TCP_NODELAY)
-    tcp_nodelay     off;
+    tcp_nodelay     on;
 
     # Enable Gzip compressed.
     gzip on;
