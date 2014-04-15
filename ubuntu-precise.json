@@ -146,12 +146,12 @@
       "except": [
         "amazon-ebs"
       ],
-      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "script": "scripts/ubuntu/non-aws.sh",
       "type": "shell"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "scripts": [
         "scripts/ubuntu/dist-upgrade.sh"
       ],
@@ -164,7 +164,7 @@
       "type": "file"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/common/authorized_keys.sh"
@@ -175,12 +175,12 @@
       "except": [
         "amazon-ebs"
       ],
-      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "script": "scripts/ubuntu/networking.sh",
       "type": "shell"
     },
     {
-      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "only": [
         "virtualbox-iso"
       ],
