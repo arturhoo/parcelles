@@ -138,7 +138,7 @@
       ],
       "output": "./builds/{{ .Provider }}/{{ user `name` }}.box",
       "type": "vagrant",
-      "vagrantfile_template": "templates/ubuntu-precise.template"
+      "vagrantfile_template": "templates/ubuntu-vagrantfile.template"
     }
   ],
   "provisioners": [
