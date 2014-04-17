@@ -4,7 +4,7 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-6.5/ks.cfg<enter><wait>"
       ],
-      "disk_size": 8192,
+      "disk_size": "{{ user `disk_size` }}",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "guest_os_type": "RedHat_64",
       "headless": false,
@@ -12,7 +12,7 @@
       "iso_checksum": "32c7695b97f7dcd1f59a77a71f64f2957dddf738",
       "iso_checksum_type": "sha1",
       "iso_url": "{{user `mirror`}}/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso",
-      "output_directory": "packer-centos-6.5-virtualbox",
+      "output_directory": "{{ user `name` }}-virtualbox",
       "shutdown_command": "echo 'centos' | sudo -S /sbin/halt -h -p",
       "ssh_password": "centos",
       "ssh_port": 22,
@@ -33,7 +33,7 @@
         ]
       ],
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "centos-6.5"
+      "vm_name": "{{ user `name` }}"
     },
     {
       "accelerator": "kvm",
@@ -41,14 +41,14 @@
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-6.5/ks.cfg<enter><wait>"
       ],
       "boot_wait": "10s",
-      "disk_size": 8192,
+      "disk_size": "{{ user `disk_size` }}",
       "format": "qcow2",
       "headless": true,
       "http_directory": "http",
       "iso_checksum": "32c7695b97f7dcd1f59a77a71f64f2957dddf738",
       "iso_checksum_type": "sha1",
       "iso_url": "{{user `mirror`}}/6.5/isos/x86_64/CentOS-6.5-x86_64-bin-DVD1.iso",
-      "output_directory": "packer-centos-6.5-qemu",
+      "output_directory": "{{ user `name` }}-qemu",
       "qemuargs": [
         [
           "-m",
@@ -68,7 +68,7 @@
       "ssh_username": "centos",
       "ssh_wait_timeout": "10000s",
       "type": "qemu",
-      "vm_name": "centos-6.5"
+      "vm_name": "{{ user `name` }}"
     }
   ],
   "post-processors": [
@@ -85,7 +85,8 @@
     {
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
-        "scripts/centos/update.sh"
+        "scripts/centos/update.sh",
+        "scripts/common/authorized_keys.sh"
       ],
       "type": "shell"
     },
@@ -111,7 +112,10 @@
     }
   ],
   "variables": {
-    "mirror": "http://centos.ufms.br"
+    "authorized_keys_template": "authorized_keys.template.example",
+    "disk_size": 8192,
+    "mirror": "http://centos.ufms.br",
+    "name": "centos-6.5"
   }
 }
 
