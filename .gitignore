@@ -1,6 +1,6 @@
 packer_cache
 output-virtualbox-iso
-output-qemu
+/*-qemu
 puppet/hieradata/*.yaml
-builds/
+vagrant/
 templates/authorized_keys.template
