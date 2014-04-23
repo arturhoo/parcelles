@@ -1,0 +1,172 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname={{ .Name }}<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-trusty/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "disk_size": "{{ user `disk_size` }}",
+      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+      "guest_os_type": "Ubuntu_64",
+      "headless": false,
+      "http_directory": "http",
+      "iso_checksum": "d5e5f77e3e537c08803c557bfdceac26abec1c6f",
+      "iso_checksum_type": "sha1",
+      "iso_url": "http://cdimage.ubuntu.com/ubuntu-server/daily/current/trusty-server-amd64.iso",
+      "output_directory": "{{ user `name` }}-virtualbox",
+      "shutdown_command": "sudo -S shutdown -P now",
+      "ssh_password": "ubuntu",
+      "ssh_username": "ubuntu",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--memory",
+          "1024"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--cpus",
+          "2"
+        ]
+      ],
+      "vm_name": "{{ user `name` }}"
+    },
+    {
+      "accelerator": "kvm",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname={{ .Name }}<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-trusty/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "disk_size": "{{ user `disk_size` }}",
+      "format": "qcow2",
+      "headless": false,
+      "http_directory": "http",
+      "iso_checksum": "d5e5f77e3e537c08803c557bfdceac26abec1c6f",
+      "iso_checksum_type": "sha1",
+      "iso_url": "http://cdimage.ubuntu.com/ubuntu-server/daily/current/trusty-server-amd64.iso",
+      "output_directory": "{{ user `name` }}-qemu",
+      "qemuargs": [
+        [
+          "-m",
+          "2048M"
+        ],
+        [
+          "-cpu",
+          "host"
+        ],
+        [
+          "-smp",
+          4
+        ]
+      ],
+      "shutdown_command": "sudo -S shutdown -P now",
+      "ssh_password": "ubuntu",
+      "ssh_username": "ubuntu",
+      "ssh_wait_timeout": "10000s",
+      "type": "qemu",
+      "vm_name": "{{ user `name` }}"
+    },
+    {
+      "ami_description": "Packer generated AMI",
+      "ami_name": "{{ user `name` }}-{{ timestamp }}",
+      "instance_type": "c3.xlarge",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda1",
+          "volume_size": 20,
+          "volume_type": "standard"
+        },
+        {
+          "device_name": "/dev/sdb",
+          "virtual_name": "ephemeral0"
+        }
+      ],
+      "region": "us-west-1",
+      "source_ami": "ami-660c3023",
+      "ssh_username": "ubuntu",
+      "type": "amazon-ebs"
+    }
+  ],
+  "post-processors": [
+    {
+      "only": [
+        "virtualbox-iso"
+      ],
+      "output": "./vagrant/{{ user `name` }}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "templates/ubuntu-vagrantfile.template"
+    }
+  ],
+  "provisioners": [
+    {
+      "except": [
+        "amazon-ebs"
+      ],
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+      "script": "scripts/ubuntu/non-aws.sh",
+      "type": "shell"
+    },
+    {
+      "only": [
+        "virtualbox-iso"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E bash '{{ .Path }}'",
+      "scripts": [
+        "scripts/common/vagrant.sh",
+        "scripts/common/vboxga.sh",
+        "scripts/common/cleanup.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "disk_size": 8192,
+    "mirror": "http://mirror.globo.com/ubuntu/releases",
+    "name": "ubuntu-trusty"
+  }
+}
+
