@@ -186,6 +186,7 @@
       "scripts": [
         "scripts/ubuntu/base.sh",
         "scripts/common/authorized_keys.sh",
+        "scripts/ubuntu/java.sh",
         "scripts/ubuntu/nginx.sh",
         "scripts/ubuntu/php.sh"
       ],
