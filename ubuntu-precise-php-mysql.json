@@ -127,7 +127,13 @@
         {
           "delete_on_termination": true,
           "device_name": "/dev/sdf",
-          "volume_size": 10,
+          "volume_size": 20,
+          "volume_type": "standard"
+        },
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sdg",
+          "volume_size": 50,
           "volume_type": "standard"
         }
       ],
