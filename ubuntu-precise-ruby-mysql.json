@@ -131,8 +131,8 @@
           "volume_type": "standard"
         }
       ],
-      "region": "us-west-1",
-      "source_ami": "ami-660c3023",
+      "region": "us-east-1",
+      "source_ami": "ami-018c9568",
       "ssh_username": "ubuntu",
       "type": "amazon-ebs"
     }
