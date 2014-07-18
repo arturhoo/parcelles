@@ -230,7 +230,7 @@
     "authorized_keys_template": "authorized_keys.template.example",
     "disk_size": 8192,
     "mirror": "http://mirror.globo.com/ubuntu/releases",
-    "name": "ubuntu-precise-ruby-mysql",
+    "name": "ubuntu-trusty-ruby-mysql",
     "rubies": "2.1.2 2.0.0-p481 1.9.3-p547"
   }
 }
