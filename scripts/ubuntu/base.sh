@@ -22,8 +22,8 @@ echo "$PERIODIC10" | tee /etc/apt/apt.conf.d/10periodic
 # Configure unattended upgrades
 read -d '' PERIODIC50 <<"EOF"
 Unattended-Upgrade::Allowed-Origins {
-        "Ubuntu precise-security";
-//      "Ubuntu precise-updates";
+        "Ubuntu trusty-security";
+//      "Ubuntu trusty-updates";
 };
 EOF
 echo "$PERIODIC50" | tee /etc/apt/apt.conf.d/50unattended-upgrades

@@ -1,9 +1,8 @@
 #!/bin/bash -eux
 
-apt-get install zlib1g-dev curl libssl-dev libsqlite3-dev nodejs \
-                libreadline-gplv2-dev libtinfo-dev imagemagick tklib \
-                libmagickwand-dev libxml2 libxml2-dev \
-                libxslt1-dev -q -y
+apt-get install zlib1g-dev libssl-dev libreadline-dev libyaml-dev \
+                libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev
+                libcurl4-openssl-dev imagemagick -q -y
 su - ubuntu -c 'curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash'
 
 read -d '' RBENV_SNIPPET <<"EOF"

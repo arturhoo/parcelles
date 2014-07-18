@@ -118,7 +118,7 @@
           "delete_on_termination": true,
           "device_name": "/dev/sda1",
           "volume_size": 20,
-          "volume_type": "standard"
+          "volume_type": "gp2"
         },
         {
           "device_name": "/dev/sdb",
@@ -128,11 +128,11 @@
           "delete_on_termination": true,
           "device_name": "/dev/sdf",
           "volume_size": 20,
-          "volume_type": "standard"
+          "volume_type": "gp2"
         }
       ],
       "region": "us-east-1",
-      "source_ami": "ami-018c9568",
+      "source_ami": "ami-a6926dce",
       "ssh_username": "ubuntu",
       "type": "amazon-ebs"
     }
