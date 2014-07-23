@@ -111,14 +111,15 @@
     },
     {
       "ami_description": "Packer generated AMI",
-      "ami_name": "{{ user `name` }}-{{ timestamp }}",
+      "ami_name": "{{ user `name` }}-{{ isotime | clean_ami_name }}",
+      "ami_virtualization_type": "hvm",
       "instance_type": "c3.xlarge",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
           "device_name": "/dev/sda1",
-          "volume_size": 20,
-          "volume_type": "standard"
+          "volume_size": 40,
+          "volume_type": "gp2"
         },
         {
           "device_name": "/dev/sdb",
@@ -128,11 +129,11 @@
           "delete_on_termination": true,
           "device_name": "/dev/sdf",
           "volume_size": 20,
-          "volume_type": "standard"
+          "volume_type": "gp2"
         }
       ],
       "region": "us-east-1",
-      "source_ami": "ami-018c9568",
+      "source_ami": "ami-a6926dce",
       "ssh_username": "ubuntu",
       "type": "amazon-ebs"
     }
@@ -144,7 +145,7 @@
       ],
       "output": "./builds/{{ .Provider }}/{{ user `name` }}.box",
       "type": "vagrant",
-      "vagrantfile_template": "templates/ubuntu-precise.template"
+      "vagrantfile_template": "templates/ubuntu-trusty.template"
     }
   ],
   "provisioners": [
@@ -230,7 +231,7 @@
     "authorized_keys_template": "authorized_keys.template.example",
     "disk_size": 8192,
     "mirror": "http://mirror.globo.com/ubuntu/releases",
-    "name": "ubuntu-precise-ruby-mysql",
+    "name": "ubuntu-trusty-ruby-mysql",
     "rubies": "2.1.2 2.0.0-p481 1.9.3-p547"
   }
 }
