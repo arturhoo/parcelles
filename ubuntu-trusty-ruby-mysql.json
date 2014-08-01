@@ -240,7 +240,7 @@
       "destination": "/home/ubuntu/aws-scripts-mon/awscreds.conf",
       "source": "templates/awscreds.conf.template",
       "type": "file"
-    },
+    }
   ],
   "variables": {
     "authorized_keys_template": "authorized_keys.template.example",
