@@ -225,7 +225,22 @@
         "scripts/common/cleanup.sh"
       ],
       "type": "shell"
-    }
+    },
+    {
+      "execute_command": "echo 'ubuntu' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+      "only": [
+        "amazon-ebs"
+      ],
+      "scripts": [
+        "scripts/ubuntu/monitoring-mysql-aws.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "destination": "/home/ubuntu/aws-scripts-mon/awscreds.conf",
+      "source": "templates/awscreds.conf.template",
+      "type": "file"
+    },
   ],
   "variables": {
     "authorized_keys_template": "authorized_keys.template.example",
