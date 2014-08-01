@@ -133,7 +133,7 @@
         }
       ],
       "region": "us-east-1",
-      "source_ami": "ami-a6926dce",
+      "source_ami": "ami-864d84ee",
       "ssh_username": "ubuntu",
       "type": "amazon-ebs"
     }
